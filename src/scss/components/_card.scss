@@ -1,8 +1,22 @@
 .card {
-  padding-inline: 1em;
+  padding-inline-start: 1em;
 }
 
 .card-label {
   display: flex;
-  justify-content: space-between;
+  margin-block: 0;
+  margin-inline-end: auto;
+}
+
+.card-button {
+  display: block;
+  appearance: none;
+  border: none;
+  width: 2em;
+  height: 2em;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
 }

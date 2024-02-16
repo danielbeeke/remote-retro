@@ -1,0 +1,25 @@
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  appearance: none;
+  border: none;
+  width: 2em;
+  background-color: var(--gray);
+  cursor: pointer;
+  height: 2em;
+  margin-inline-start: 4px;
+  border-radius: var(--radius-medium);
+
+  &.light {
+    background-color: var(--gray-light);
+  }
+
+  &.block {
+    width: auto;
+  }
+
+  &:hover {
+    background-color: var(--gray-dark);
+  }
+}

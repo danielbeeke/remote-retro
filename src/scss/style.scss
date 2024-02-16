@@ -1,9 +1,13 @@
 @import './components/board';
 @import './components/card';
+@import './components/button';
 
 :root {
-  --gray: #eee;
+  --gray-light: #efefef;
+  --gray: #e2d8d8;
+  --gray-dark: rgb(168, 160, 160);
   --radius-medium: 5px;
+  --green: rgb(201, 252, 208);
 }
 
 body {

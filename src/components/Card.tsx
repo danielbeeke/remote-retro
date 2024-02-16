@@ -15,34 +15,37 @@ export default function Card(
   const [showColumnDropdown, setShowColumnDropdown] = useState(false)
   const [editMode, setEditMode] = useState(label === '')
 
+  const highlight = editMode || showColumnDropdown
+
   return (
-    <div class="card">
+    <div class={`card ${highlight ? 'highlight' : ''} ${editMode ? 'edit-mode' : ''}`}>
       <header class="card-header">
-        <h4 class="card-label">
-          {editMode ? (
-            <input
-              value={label}
-              onChange={(event) => {
-                updateCard({
-                  ...props,
-                  label: (event.target as HTMLInputElement).value,
-                })
-              }}
-              onBlur={() => setEditMode(false)}
-            />
-          ) : (
-            label
-          )}
-        </h4>
+        <input
+          class="card-label-input"
+          value={label}
+          ref={(input) => input && input.focus()}
+          onChange={(event) => {
+            updateCard({
+              ...props,
+              label: (event.target as HTMLInputElement).value,
+            })
+          }}
+          onBlur={() => setEditMode(false)}
+        />
+
+        {editMode ? null : <h4 class="card-label">{label}</h4>}
+
         <button
-          class="card-button"
+          class="button"
           aria-label={`Edit card with the label: "${label}"`}
-          onClick={() => setEditMode(!editMode)}
+          onClick={() => {
+            setEditMode(!editMode)
+          }}
         >
           {pencilIcon}
         </button>
         <button
-          class="card-button"
+          class="button"
           aria-label={`Change column of card with the label: "${label}"`}
           onClick={() => {
             setShowColumnDropdown(!showColumnDropdown)
@@ -51,9 +54,10 @@ export default function Card(
           {changeColumnIcon}
         </button>
         {showColumnDropdown ? (
-          <div>
+          <div class="card-column-dropdown">
             {columns.map(({ id, label }) => (
               <button
+                class="button block"
                 onClick={() => {
                   updateCard({
                     ...props,
@@ -68,7 +72,7 @@ export default function Card(
           </div>
         ) : null}
         <button
-          class="card-button"
+          class="button"
           aria-label={`Delete card with the label: "${label}"`}
           onClick={() => {
             const confirmed = confirm(`Are you sure you want to delete "${label}"?`)

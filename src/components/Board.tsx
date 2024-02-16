@@ -35,6 +35,7 @@ export default function Board({ columns, initialCards }: BoardProps) {
           <h3 class="column-label">
             {column.label}
             <button
+              class="button light"
               onClick={() => {
                 setCards([
                   ...cards,

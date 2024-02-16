@@ -1,5 +1,17 @@
 .card {
-  padding-inline-start: 1em;
+  padding: 1em;
+  background-color: var(--gray-light);
+  margin-top: 0.5em;
+  border-radius: var(--radius-medium);
+  box-shadow: 0 4px 3px rgba(black, 0.1);
+
+  &.highlight {
+    background-color: var(--green);
+  }
+
+  &.edit-mode .card-label-input {
+    display: block;
+  }
 }
 
 .card-label {
@@ -8,15 +20,27 @@
   margin-inline-end: auto;
 }
 
-.card-button {
-  display: block;
-  appearance: none;
-  border: none;
-  width: 2em;
-  height: 2em;
-}
-
 .card-header {
+  position: relative;
   display: flex;
   align-items: center;
+}
+
+.card-column-dropdown {
+  z-index: 10;
+  display: flex;
+  position: absolute;
+  right: 0;
+  flex-direction: column;
+  padding: 5px;
+  gap: 5px;
+  border-radius: var(--radius-medium);
+  background-color: var(--green);
+  border: 1px solid var(--gray-dark);
+}
+
+.card-label-input {
+  flex: auto 1 1;
+  width: auto;
+  display: none;
 }

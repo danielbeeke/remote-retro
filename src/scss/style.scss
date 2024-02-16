@@ -1,0 +1,12 @@
+@import './components/board';
+@import './components/card';
+
+:root {
+  --gray: #eee;
+  --radius-medium: 5px;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto';
+}

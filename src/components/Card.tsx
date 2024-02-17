@@ -11,7 +11,7 @@ export type CardProps = {
 export default function Card(
   props: CardProps & { columns: ColumnProps[]; updateCard: (newCard: CardProps | null) => void }
 ) {
-  const { label, column, columns, updateCard } = props
+  const { label, columns, updateCard } = props
   const [showColumnDropdown, setShowColumnDropdown] = useState(false)
   const [editMode, setEditMode] = useState(label === '')
 

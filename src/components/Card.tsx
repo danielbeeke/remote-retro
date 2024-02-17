@@ -6,19 +6,40 @@ import { ColumnProps } from './Board'
 export type CardProps = {
   label: string
   column: string
+  votes: string[]
 }
+
+const currentUser = 'pieter'
+const maxVotesPerPerson = 2
 
 export default function Card(
   props: CardProps & { columns: ColumnProps[]; updateCard: (newCard: CardProps | null) => void }
 ) {
-  const { label, columns, updateCard } = props
+  const { label, columns, votes, updateCard } = props
   const [showColumnDropdown, setShowColumnDropdown] = useState(false)
   const [editMode, setEditMode] = useState(label === '')
 
   const highlight = editMode || showColumnDropdown
 
   return (
-    <div class={`card ${highlight ? 'highlight' : ''} ${editMode ? 'edit-mode' : ''}`}>
+    <div
+      onClick={(event) => {
+        const isButton =
+          (event.target as HTMLElement).nodeName === 'BUTTON' || (event.target as HTMLElement).closest('.button')
+        if (isButton) return
+
+        const newVotes =
+          votes.filter((voter) => voter === currentUser).length === maxVotesPerPerson
+            ? votes.filter((voter) => voter !== currentUser)
+            : [...votes, currentUser]
+
+        updateCard({
+          ...props,
+          votes: newVotes,
+        })
+      }}
+      class={`card ${highlight ? 'highlight' : ''} ${editMode ? 'edit-mode' : ''}`}
+    >
       <header class="card-header">
         <input
           class="card-label-input"
@@ -82,6 +103,15 @@ export default function Card(
           {deleteIcon}
         </button>
       </header>
+      {votes ? (
+        <div class="card-votes">
+          {votes.map((voter) => (
+            <div class={`card-vote ${voter === currentUser ? 'own-vote' : ''}`}>
+              <span class="card-vote-voter">{voter}</span>
+            </div>
+          ))}
+        </div>
+      ) : null}
     </div>
   )
 }

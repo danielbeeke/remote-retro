@@ -21,9 +21,12 @@ const columns = [
   },
 ]
 
+const users = ['john', 'frank', 'amy', 'pieter']
+
 const cards = [...Array(10)].map(() => ({
   label: faker.git.commitMessage(),
   column: faker.helpers.arrayElement(columns.map((column) => column.id)),
+  votes: faker.helpers.arrayElements(users),
 }))
 
 export function App() {

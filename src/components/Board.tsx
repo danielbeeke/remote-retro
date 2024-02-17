@@ -1,6 +1,8 @@
 import { useState } from 'preact/hooks'
 
-import Card, { CardProps } from './Card'
+import { sortCards } from '../helpers/sortCards'
+import { CardProps } from './Card'
+import Cards from './Cards'
 
 export type ColumnProps = {
   label: string
@@ -12,21 +14,8 @@ type BoardProps = {
   initialCards: CardProps[]
 }
 
-const sortCards = (a: CardProps, b: CardProps) => {
-  if (a.label === '') return -1000
-  if (b.label === '') return 1000
-  return a.label.localeCompare(b.label)
-}
-
 export default function Board({ columns, initialCards }: BoardProps) {
   const [cards, setCards] = useState<CardProps[]>(initialCards.sort(sortCards))
-
-  const updateCard = (oldCard: CardProps, newCard: CardProps | null) => {
-    const filteredCards = cards.filter((card) => card !== oldCard)
-    if (newCard) filteredCards.push(newCard)
-    filteredCards.sort(sortCards)
-    setCards(filteredCards)
-  }
 
   return (
     <div class="board">
@@ -42,6 +31,7 @@ export default function Board({ columns, initialCards }: BoardProps) {
                   {
                     label: '',
                     column: column.id,
+                    votes: [],
                   },
                 ])
               }}
@@ -50,17 +40,7 @@ export default function Board({ columns, initialCards }: BoardProps) {
               +
             </button>
           </h3>
-          <div>
-            {cards
-              .filter((card) => card.column === column.id)
-              .map((card) => (
-                <Card
-                  updateCard={(newCard: CardProps | null) => updateCard(card, newCard)}
-                  {...card}
-                  columns={columns}
-                />
-              ))}
-          </div>
+          <Cards cards={cards} setCards={setCards} columnId={column.id} columns={columns} />
         </div>
       ))}
     </div>

@@ -4,6 +4,20 @@
   margin-top: 0.5em;
   border-radius: var(--radius-medium);
   box-shadow: 0 4px 3px rgba(black, 0.1);
+  position: relative;
+  z-index: 1;
+
+  &:after {
+    content: '';
+    display: block;
+    background-color: var(--color);
+    position: absolute;
+    pointer-events: none;
+    border-radius: var(--radius-medium);
+    inset: 0;
+    opacity: 0.05;
+    z-index: -1;
+  }
 
   &.highlight {
     background-color: var(--green);

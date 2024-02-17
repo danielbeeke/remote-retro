@@ -7,6 +7,7 @@ import Cards from './Cards'
 export type ColumnProps = {
   label: string
   id: string
+  color: string
 }
 
 type BoardProps = {
@@ -20,7 +21,7 @@ export default function Board({ columns, initialCards }: BoardProps) {
   return (
     <div class="board">
       {columns.map((column) => (
-        <div class="column">
+        <div class="column" style={`--color: ${column.color};`}>
           <h3 class="column-label">
             {column.label}
             <button

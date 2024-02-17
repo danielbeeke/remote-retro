@@ -6,18 +6,22 @@ const columns = [
   {
     label: 'Good 👍',
     id: 'good',
+    color: 'green',
   },
   {
     label: 'Bad 👎',
     id: 'bad',
+    color: 'red',
   },
   {
     label: 'Actions 📋',
     id: 'actions',
+    color: 'blue',
   },
   {
     label: 'Ideas 💡',
     id: 'ideas',
+    color: 'orange',
   },
 ]
 

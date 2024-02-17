@@ -8,12 +8,26 @@
     width: 300px;
 
     .column-label {
+      position: relative;
       display: flex;
       margin: 0;
+      z-index: 1;
       justify-content: space-between;
       padding: 1rem;
       border-radius: var(--radius-medium);
       background-color: var(--gray);
+
+      &:after {
+        border-radius: var(--radius-medium);
+        content: '';
+        display: block;
+        background-color: var(--color);
+        position: absolute;
+        pointer-events: none;
+        inset: 0;
+        opacity: 0.2;
+        z-index: -1;
+      }
     }
   }
 }

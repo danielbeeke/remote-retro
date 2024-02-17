@@ -7,13 +7,14 @@ export type CardProps = {
   label: string
   column: string
   votes: string[]
+  id: string
 }
 
 const currentUser = 'pieter'
 const maxVotesPerPerson = 2
 
 export default function Card(
-  props: CardProps & { columns: ColumnProps[]; updateCard: (newCard: CardProps | null) => void }
+  props: CardProps & { columns: ColumnProps[]; updateCard: (oldCard: CardProps, newCard: CardProps | null) => void }
 ) {
   const { label, columns, votes, updateCard } = props
   const [showColumnDropdown, setShowColumnDropdown] = useState(false)
@@ -28,12 +29,14 @@ export default function Card(
           (event.target as HTMLElement).nodeName === 'BUTTON' || (event.target as HTMLElement).closest('.button')
         if (isButton) return
 
+        console.log(props)
+
         const newVotes =
           votes.filter((voter) => voter === currentUser).length === maxVotesPerPerson
             ? votes.filter((voter) => voter !== currentUser)
             : [...votes, currentUser]
 
-        updateCard({
+        updateCard(props, {
           ...props,
           votes: newVotes,
         })
@@ -46,7 +49,7 @@ export default function Card(
           value={label}
           ref={(input) => input && input.focus()}
           onChange={(event) => {
-            updateCard({
+            updateCard(props, {
               ...props,
               label: (event.target as HTMLInputElement).value,
             })
@@ -80,7 +83,7 @@ export default function Card(
               <button
                 class="button block"
                 onClick={() => {
-                  updateCard({
+                  updateCard(props, {
                     ...props,
                     column: id,
                   })
@@ -97,7 +100,7 @@ export default function Card(
           aria-label={`Delete card with the label: "${label}"`}
           onClick={() => {
             const confirmed = confirm(`Are you sure you want to delete "${label}"?`)
-            if (confirmed) updateCard(null)
+            if (confirmed) updateCard(props, null)
           }}
         >
           {deleteIcon}

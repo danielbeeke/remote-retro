@@ -18,6 +18,14 @@ type BoardProps = {
 export default function Board({ columns, initialCards }: BoardProps) {
   const [cards, setCards] = useState<CardProps[]>(initialCards.sort(sortCards))
 
+  const updateCard = (oldCard: CardProps, newCard: CardProps | null) => {
+    setCards((cards) => {
+      const filteredCards = cards.filter((card) => card.id !== oldCard.id)
+      if (newCard) filteredCards.push(newCard)
+      return filteredCards
+    })
+  }
+
   return (
     <div class="board">
       {columns.map((column) => (
@@ -28,12 +36,13 @@ export default function Board({ columns, initialCards }: BoardProps) {
               class="button light"
               onClick={() => {
                 setCards([
-                  ...cards,
                   {
                     label: '',
+                    id: self.crypto.randomUUID(),
                     column: column.id,
                     votes: [],
                   },
+                  ...cards,
                 ])
               }}
               aria-label={`Add card to column ${column.label}`}
@@ -41,7 +50,12 @@ export default function Board({ columns, initialCards }: BoardProps) {
               +
             </button>
           </h3>
-          <Cards cards={cards} setCards={setCards} columnId={column.id} columns={columns} />
+          <Cards
+            key={column.id}
+            cards={cards.filter((card) => card.column === column.id).sort(sortCards)}
+            updateCard={updateCard}
+            columns={columns}
+          />
         </div>
       ))}
     </div>

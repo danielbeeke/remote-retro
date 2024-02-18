@@ -52,6 +52,17 @@
   border-radius: var(--radius-medium);
   background-color: var(--green);
   border: 1px solid var(--gray-dark);
+
+  .button.active {
+    background-color: var(--blue);
+  }
+}
+
+.vote-text {
+  margin-left: auto;
+  opacity: 0.6;
+  font-size: 0.9em;
+  cursor: pointer;
 }
 
 .card-label-input {

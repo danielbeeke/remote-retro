@@ -26,6 +26,9 @@ const columns = [
 ]
 
 const users = ['john', 'frank', 'amy', 'pieter']
+export const maxVotesPerCardPerPerson = 3
+export const maxVotesPerCategoryPerPerson = 5
+export const currentUser = 'pieter'
 
 const cards = [...Array(10)].map(() => ({
   label: faker.git.commitMessage(),

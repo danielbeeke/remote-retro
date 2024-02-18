@@ -2,16 +2,25 @@
   display: flex;
   gap: 3em;
   margin: 3em;
+  flex-wrap: wrap;
 
   .column {
     flex: auto 1 1;
     width: 300px;
+
+    .max-votes {
+      opacity: 0.6;
+      font-size: 0.8em;
+      margin-inline-start: auto;
+      margin-inline-end: 0.6em;
+    }
 
     .column-label {
       position: relative;
       display: flex;
       margin: 0;
       z-index: 1;
+      align-items: center;
       justify-content: space-between;
       padding: 1rem;
       border-radius: var(--radius-medium);

@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks'
 
+import { currentUser, maxVotesPerCardPerPerson, maxVotesPerCategoryPerPerson } from '../app'
 import { changeColumnIcon, deleteIcon, pencilIcon } from '../icons'
 import { ColumnProps } from './Board'
 
@@ -8,19 +9,19 @@ export type CardProps = {
   column: string
   votes: string[]
   id: string
+  categoryVotes: number
 }
-
-const currentUser = 'pieter'
-const maxVotesPerPerson = 2
 
 export default function Card(
   props: CardProps & { columns: ColumnProps[]; updateCard: (oldCard: CardProps, newCard: CardProps | null) => void }
 ) {
-  const { label, columns, votes, updateCard } = props
+  const { label, columns, column, votes, categoryVotes, updateCard } = props
   const [showColumnDropdown, setShowColumnDropdown] = useState(false)
   const [editMode, setEditMode] = useState(label === '')
 
   const highlight = editMode || showColumnDropdown
+
+  const ownVotes = votes.filter((voter) => voter === currentUser).length
 
   return (
     <div
@@ -29,10 +30,8 @@ export default function Card(
           (event.target as HTMLElement).nodeName === 'BUTTON' || (event.target as HTMLElement).closest('.button')
         if (isButton) return
 
-        console.log(props)
-
         const newVotes =
-          votes.filter((voter) => voter === currentUser).length === maxVotesPerPerson
+          ownVotes === maxVotesPerCardPerPerson || categoryVotes === maxVotesPerCategoryPerPerson
             ? votes.filter((voter) => voter !== currentUser)
             : [...votes, currentUser]
 
@@ -81,7 +80,7 @@ export default function Card(
           <div class="card-column-dropdown">
             {columns.map(({ id, label }) => (
               <button
-                class="button block"
+                class={`button block ${id === column ? 'active' : ''}`}
                 onClick={() => {
                   updateCard(props, {
                     ...props,
@@ -99,6 +98,7 @@ export default function Card(
           class="button"
           aria-label={`Delete card with the label: "${label}"`}
           onClick={() => {
+            // TODO replace with a nice looking dialog
             const confirmed = confirm(`Are you sure you want to delete "${label}"?`)
             if (confirmed) updateCard(props, null)
           }}
@@ -106,15 +106,18 @@ export default function Card(
           {deleteIcon}
         </button>
       </header>
-      {votes ? (
-        <div class="card-votes">
-          {votes.map((voter) => (
-            <div class={`card-vote ${voter === currentUser ? 'own-vote' : ''}`}>
-              <span class="card-vote-voter">{voter}</span>
-            </div>
-          ))}
-        </div>
-      ) : null}
+      <div class="card-votes">
+        {votes.map((voter) => (
+          <div class={`card-vote ${voter === currentUser ? 'own-vote' : ''}`}>
+            <span class="card-vote-voter">{voter}</span>
+          </div>
+        ))}
+        {ownVotes === maxVotesPerCardPerPerson || categoryVotes === maxVotesPerCategoryPerPerson ? (
+          <em class="vote-text">- Remove your votes</em>
+        ) : (
+          <em class="vote-text">+ Add a vote (max {maxVotesPerCardPerPerson})</em>
+        )}
+      </div>
     </div>
   )
 }

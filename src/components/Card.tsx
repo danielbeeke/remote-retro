@@ -9,7 +9,7 @@ export type CardProps = {
   column: string
   votes: string[]
   id: string
-  categoryVotes: number
+  categoryVotes?: number
 }
 
 export default function Card(
@@ -17,9 +17,10 @@ export default function Card(
 ) {
   const { label, columns, column, votes, categoryVotes, updateCard } = props
   const [showColumnDropdown, setShowColumnDropdown] = useState(false)
+  const [deletionCandidate, setDeletionCandidate] = useState(false)
   const [editMode, setEditMode] = useState(label === '')
 
-  const highlight = editMode || showColumnDropdown
+  const highlight = editMode || showColumnDropdown || deletionCandidate
 
   const ownVotes = votes.filter((voter) => voter === currentUser).length
 
@@ -98,9 +99,14 @@ export default function Card(
           class="button"
           aria-label={`Delete card with the label: "${label}"`}
           onClick={() => {
-            // TODO replace with a nice looking dialog
-            const confirmed = confirm(`Are you sure you want to delete "${label}"?`)
-            if (confirmed) updateCard(props, null)
+            setDeletionCandidate(true)
+
+            setTimeout(() => {
+              // TODO replace with a nice looking dialog
+              const confirmed = confirm(`Are you sure you want to delete "${label}"?`)
+              if (confirmed) updateCard(props, null)
+              setDeletionCandidate(false)
+            })
           }}
         >
           {deleteIcon}
